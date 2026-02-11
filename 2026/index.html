@@ -3,7 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>경기 일정</title>
+    <title>홈인스타그램 2026년 리그 일정</title>
+    <meta name="description" content="Home_Instagram 팀의 2026년 일요리그 전체 경기 일정을 확인하세요.">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="홈인스타그램 2026년 리그 일정">
+    <meta property="og:description" content="Home_Instagram 팀의 2026년 일요리그 전체 경기 일정을 확인하세요.">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="홈인스타그램 2026년 리그 일정">
+    <meta name="twitter:description" content="Home_Instagram 팀의 2026년 일요리그 전체 경기 일정을 확인하세요.">
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
@@ -185,7 +197,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>⚾ 2025 시즌 경기 일정</h1>
+            <h1>⚾ 2026 시즌 경기 일정</h1>
             <div class="team-name">Home_Instagram</div>
             <button class="download-btn" onclick="downloadImage()">📥 이미지로 다운로드</button>
         </div>
@@ -348,7 +360,7 @@
                 logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
-                link.download = 'Home_Instagram_경기일정_2025.png';
+                link.download = 'Home_Instagram_경기일정_2026.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
 
