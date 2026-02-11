@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>경기 일정</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2d3748;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header .team-name {
+            color: #667eea;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .download-btn:active {
+            transform: translateY(0);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        thead th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 1em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        thead th:first-child {
+            border-radius: 10px 0 0 0;
+            text-align: center;
+            width: 60px;
+        }
+
+        thead th:last-child {
+            border-radius: 0 10px 0 0;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background-color: #f7fafc;
+            transform: scale(1.01);
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody td {
+            padding: 16px 15px;
+            color: #4a5568;
+        }
+
+        tbody td:first-child {
+            text-align: center;
+            font-weight: 600;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .date {
+            font-weight: 600;
+            color: #2d3748;
+            white-space: nowrap;
+        }
+
+        .category {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .category-c1 {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .category-regular {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .match {
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        .home-team {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            table {
+                font-size: 0.85em;
+            }
+
+            thead th, tbody td {
+                padding: 12px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚾ 2025 시즌 경기 일정</h1>
+            <div class="team-name">Home_Instagram</div>
+            <button class="download-btn" onclick="downloadImage()">📥 이미지로 다운로드</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>일시</th>
+                    <th>분류</th>
+                    <th>경기</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td class="date">02월22일(일) 10:00</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match">해피워리어스 vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td class="date">03월01일(일) 16:00</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match"><span class="home-team">Home_Instagram</span> vs 루나스틱OB</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td class="date">03월15일(일) 07:00</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match">캐넌즈 vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td class="date">03월29일(일) 11:00</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match">로시난테(Rosinante) vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td class="date">04월05일(일) 09:00</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match">로시난테(Rosinante) vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td class="date">04월19일(일) 15:00</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match"><span class="home-team">Home_Instagram</span> vs 미라클</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td class="date">04월26일(일) 13:00</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match">여우야(FENNEC FOX) vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>8</td>
+                    <td class="date">05월10일(일) 12:30</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match">야썸 WIZ vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>9</td>
+                    <td class="date">05월17일(일) 08:30</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match">ART SWING vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>10</td>
+                    <td class="date">05월31일(일) 10:30</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match"><span class="home-team">Home_Instagram</span> vs 귓방망이</td>
+                </tr>
+                <tr>
+                    <td>11</td>
+                    <td class="date">06월07일(일) 06:30</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match"><span class="home-team">Home_Instagram</span> vs 굳팰라스</td>
+                </tr>
+                <tr>
+                    <td>12</td>
+                    <td class="date">06월21일(일) 14:30</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match"><span class="home-team">Home_Instagram</span> vs 아이파커스</td>
+                </tr>
+                <tr>
+                    <td>13</td>
+                    <td class="date">06월21일(일) 16:30</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match">Better than You vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>14</td>
+                    <td class="date">06월28일(일) 08:30</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match">Triple-X vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>15</td>
+                    <td class="date">07월05일(일) 10:30</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match"><span class="home-team">Home_Instagram</span> vs NINE PRINCES</td>
+                </tr>
+                <tr>
+                    <td>16</td>
+                    <td class="date">07월12일(일) 16:30</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match"><span class="home-team">Home_Instagram</span> vs 광림파크 야구단</td>
+                </tr>
+                <tr>
+                    <td>17</td>
+                    <td class="date">07월26일(일) 14:30</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match"><span class="home-team">Home_Instagram</span> vs Team Roots</td>
+                </tr>
+                <tr>
+                    <td>18</td>
+                    <td class="date">08월02일(일) 14:30</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match">루나스틱OB vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>19</td>
+                    <td class="date">08월09일(일) 06:30</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match"><span class="home-team">Home_Instagram</span> vs 배트맨 리턴즈</td>
+                </tr>
+                <tr>
+                    <td>20</td>
+                    <td class="date">08월16일(일) 06:30</td>
+                    <td><span class="category category-regular">일요리그</span></td>
+                    <td class="match"><span class="home-team">Home_Instagram</span> vs 캐넌즈</td>
+                </tr>
+                <tr>
+                    <td>21</td>
+                    <td class="date">09월06일(일) 12:30</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match">SJ브라더스 vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+                <tr>
+                    <td>22</td>
+                    <td class="date">10월04일(일) 08:30</td>
+                    <td><span class="category category-c1">일요리그C1</span></td>
+                    <td class="match">Mollangs vs <span class="home-team">Home_Instagram</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function downloadImage() {
+            const button = document.querySelector('.download-btn');
+            button.textContent = '⏳ 생성 중...';
+            button.disabled = true;
+
+            html2canvas(document.querySelector('.container'), {
+                scale: 2,
+                backgroundColor: '#ffffff',
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'Home_Instagram_경기일정_2025.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+
+                button.textContent = '📥 이미지로 다운로드';
+                button.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>
