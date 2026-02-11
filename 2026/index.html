@@ -398,22 +398,51 @@
     <script>
         function downloadImage() {
             const button = document.querySelector('.download-btn');
+            const tableWrapper = document.querySelector('.table-wrapper');
+            const container = document.querySelector('.container');
+            
             button.textContent = '⏳ 생성 중...';
             button.disabled = true;
 
-            html2canvas(document.querySelector('.container'), {
-                scale: 2,
-                backgroundColor: '#ffffff',
-                logging: false
-            }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = 'Home_Instagram_경기일정_2026.png';
-                link.href = canvas.toDataURL('image/png');
-                link.click();
+            // 다운로드를 위해 스크롤 제거 및 전체 표시
+            const originalOverflow = tableWrapper.style.overflow;
+            const originalContainerOverflow = container.style.overflow;
+            
+            tableWrapper.style.overflow = 'visible';
+            container.style.overflow = 'visible';
+            
+            // 약간의 지연을 주어 렌더링 완료 대기
+            setTimeout(() => {
+                html2canvas(container, {
+                    scale: 2,
+                    backgroundColor: '#ffffff',
+                    logging: false,
+                    windowWidth: container.scrollWidth,
+                    windowHeight: container.scrollHeight
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'Home_Instagram_경기일정_2026.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
 
-                button.textContent = '📥 이미지로 다운로드';
-                button.disabled = false;
-            });
+                    // 원래 스타일로 복구
+                    tableWrapper.style.overflow = originalOverflow;
+                    container.style.overflow = originalContainerOverflow;
+                    
+                    button.textContent = '📥 이미지로 다운로드';
+                    button.disabled = false;
+                }).catch(error => {
+                    console.error('이미지 생성 실패:', error);
+                    
+                    // 에러 발생 시에도 스타일 복구
+                    tableWrapper.style.overflow = originalOverflow;
+                    container.style.overflow = originalContainerOverflow;
+                    
+                    button.textContent = '📥 이미지로 다운로드';
+                    button.disabled = false;
+                    alert('이미지 생성에 실패했습니다. 다시 시도해주세요.');
+                });
+            }, 100);
         }
     </script>
 </body>
