@@ -41,6 +41,31 @@
             padding: 40px;
             max-width: 1200px;
             width: 100%;
+            overflow: hidden;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin-top: 20px;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .table-wrapper::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
         }
 
         .header {
@@ -87,7 +112,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            min-width: 600px;
         }
 
         thead {
@@ -176,20 +201,40 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
             .container {
-                padding: 20px;
+                padding: 20px 15px;
+                border-radius: 15px;
             }
 
             .header h1 {
-                font-size: 1.8em;
+                font-size: 1.5em;
+            }
+
+            .header .team-name {
+                font-size: 1em;
+            }
+
+            .download-btn {
+                padding: 10px 20px;
+                font-size: 0.9em;
             }
 
             table {
-                font-size: 0.85em;
+                font-size: 0.75em;
+                min-width: 550px;
             }
 
             thead th, tbody td {
-                padding: 12px 8px;
+                padding: 10px 6px;
+            }
+
+            .category {
+                padding: 4px 10px;
+                font-size: 0.8em;
             }
         }
     </style>
@@ -202,7 +247,8 @@
             <button class="download-btn" onclick="downloadImage()">📥 이미지로 다운로드</button>
         </div>
 
-        <table>
+        <div class="table-wrapper">
+            <table>
             <thead>
                 <tr>
                     <th>#</th>
@@ -346,6 +392,7 @@
                 </tr>
             </tbody>
         </table>
+        </div>
     </div>
 
     <script>
