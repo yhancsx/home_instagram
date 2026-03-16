@@ -3,132 +3,154 @@
         "id": 1,
         "date": "02월22일(일) 10:00",
         "category": "일요리그C1",
-        "match": "해피워리어스 vs Home_Instagram"
+        "match": "해피워리어스 vs Home_Instagram",
+        "result": "승"
     },
     {
         "id": 2,
         "date": "03월01일(일) 16:00",
         "category": "일요리그",
-        "match": "Home_Instagram vs 루나스틱OB"
+        "match": "Home_Instagram vs 루나스틱OB",
+        "result": "패"
     },
     {
         "id": 3,
         "date": "03월15일(일) 07:00",
         "category": "일요리그",
-        "match": "캐넌즈 vs Home_Instagram"
+        "match": "캐넌즈 vs Home_Instagram",
+        "result": "패"
     },
     {
         "id": 4,
         "date": "03월29일(일) 11:00",
         "category": "일요리그C1",
-        "match": "로시난테(Rosinante) vs Home_Instagram"
+        "match": "로시난테(Rosinante) vs Home_Instagram",
+        "result": null
     },
     {
         "id": 5,
         "date": "04월05일(일) 09:00",
         "category": "일요리그",
-        "match": "로시난테(Rosinante) vs Home_Instagram"
+        "match": "로시난테(Rosinante) vs Home_Instagram",
+        "result": null
     },
     {
         "id": 6,
         "date": "04월19일(일) 15:00",
         "category": "일요리그",
-        "match": "Home_Instagram vs 미라클"
+        "match": "Home_Instagram vs 미라클",
+        "result": null
     },
     {
         "id": 7,
         "date": "04월26일(일) 13:00",
         "category": "일요리그C1",
-        "match": "여우야(FENNEC FOX) vs Home_Instagram"
+        "match": "여우야(FENNEC FOX) vs Home_Instagram",
+        "result": null
     },
     {
         "id": 8,
         "date": "05월10일(일) 12:30",
         "category": "일요리그C1",
-        "match": "야썸 WIZ vs Home_Instagram"
+        "match": "야썸 WIZ vs Home_Instagram",
+        "result": null
     },
     {
         "id": 9,
         "date": "05월17일(일) 08:30",
         "category": "일요리그",
-        "match": "ART SWING vs Home_Instagram"
+        "match": "ART SWING vs Home_Instagram",
+        "result": null
     },
     {
         "id": 10,
         "date": "05월31일(일) 10:30",
         "category": "일요리그C1",
-        "match": "Home_Instagram vs 귓방망이"
+        "match": "Home_Instagram vs 귓방망이",
+        "result": null
     },
     {
         "id": 11,
         "date": "06월07일(일) 06:30",
         "category": "일요리그",
-        "match": "Home_Instagram vs 굳팰라스"
+        "match": "Home_Instagram vs 굳팰라스",
+        "result": null
     },
     {
         "id": 12,
         "date": "06월21일(일) 14:30",
         "category": "일요리그C1",
-        "match": "Home_Instagram vs 아이파커스"
+        "match": "Home_Instagram vs 아이파커스",
+        "result": null
     },
     {
         "id": 13,
         "date": "06월21일(일) 16:30",
         "category": "일요리그",
-        "match": "Better than You vs Home_Instagram"
+        "match": "Better than You vs Home_Instagram",
+        "result": null
     },
     {
         "id": 14,
         "date": "06월28일(일) 08:30",
         "category": "일요리그",
-        "match": "Triple-X vs Home_Instagram"
+        "match": "Triple-X vs Home_Instagram",
+        "result": null
     },
     {
         "id": 15,
         "date": "07월05일(일) 10:30",
         "category": "일요리그C1",
-        "match": "Home_Instagram vs NINE PRINCES"
+        "match": "Home_Instagram vs NINE PRINCES",
+        "result": null
     },
     {
         "id": 16,
         "date": "07월12일(일) 16:30",
         "category": "일요리그",
-        "match": "Home_Instagram vs 광림파크 야구단"
+        "match": "Home_Instagram vs 광림파크 야구단",
+        "result": null
     },
     {
         "id": 17,
         "date": "07월26일(일) 14:30",
         "category": "일요리그C1",
-        "match": "Home_Instagram vs Team Roots"
+        "match": "Home_Instagram vs Team Roots",
+        "result": null
     },
     {
         "id": 18,
         "date": "08월02일(일) 14:30",
         "category": "일요리그",
-        "match": "루나스틱OB vs Home_Instagram"
+        "match": "루나스틱OB vs Home_Instagram",
+        "result": null
     },
     {
         "id": 19,
         "date": "08월09일(일) 06:30",
         "category": "일요리그C1",
-        "match": "Home_Instagram vs 배트맨 리턴즈"
+        "match": "Home_Instagram vs 배트맨 리턴즈",
+        "result": null
     },
     {
         "id": 20,
         "date": "08월16일(일) 06:30",
         "category": "일요리그",
-        "match": "Home_Instagram vs 캐넌즈"
+        "match": "Home_Instagram vs 캐넌즈",
+        "result": null
     },
     {
         "id": 21,
         "date": "09월06일(일) 12:30",
         "category": "일요리그C1",
-        "match": "SJ브라더스 vs Home_Instagram"
+        "match": "SJ브라더스 vs Home_Instagram",
+        "result": null
     },
     {
         "id": 22,
         "date": "10월04일(일) 08:30",
         "category": "일요리그C1",
-        "match": "Mollangs vs Home_Instagram"
+        "match": "Mollangs vs Home_Instagram",
+        "result": null
     }
 ]

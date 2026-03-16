@@ -200,6 +200,19 @@
             font-weight: 700;
         }
 
+        .result {
+            font-weight: 700;
+            text-align: center;
+        }
+        
+        .result-win {
+            color: #38a169;
+        }
+
+        .result-lose {
+            color: #e53e3e;
+        }
+
         @media (max-width: 768px) {
             body {
                 padding: 10px;
@@ -254,6 +267,7 @@
                     <th>#</th>
                     <th>일시</th>
                     <th>분류</th>
+                    <th>결과</th>
                     <th>경기</th>
                 </tr>
             </thead>
@@ -274,11 +288,13 @@
                         const row = document.createElement('tr');
                         
                         const categoryClass = game.category === '일요리그C1' ? 'category-c1' : 'category-regular';
+                        const resultClass = game.result === '승' ? 'result-win' : game.result === '패' ? 'result-lose' : '';
 
                         row.innerHTML = `
                             <td>${game.id}</td>
                             <td class="date">${game.date}</td>
                             <td><span class="category ${categoryClass}">${game.category}</span></td>
+                            <td class="result ${resultClass}">${game.result || ''}</td>
                             <td class="match">${game.match.replace(/Home_Instagram/g, '<span class="home-team">Home_Instagram</span>')}</td>
                         `;
                         scheduleBody.appendChild(row);
