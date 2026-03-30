@@ -364,7 +364,7 @@
             const hashColumnCells = document.querySelectorAll('tbody td:nth-child(1)');
             const resultColumnCells = document.querySelectorAll('tbody td:nth-child(4)');
 
-            const elementsToHide = [hashColumnHeader, resultColumnHeader, ...hashColumnCells, ...resultColumnCells];
+            const elementsToHide = [hashColumnHeader, resultColumnHeader, button, ...hashColumnCells, ...resultColumnCells];
             elementsToHide.forEach(el => {
                 if (el) el.style.display = 'none';
             });
