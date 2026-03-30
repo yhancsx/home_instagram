@@ -294,52 +294,56 @@
         </div>
     </div>
 
+    <script src="schedule.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('schedule.json')
-                .then(response => response.json())
-                .then(data => {
-                    const scheduleBody = document.getElementById('schedule-body');
-                    const gameSummary = document.getElementById('game-summary');
-                    
-                    let wins = 0;
-                    let losses = 0;
-                    let draws = 0;
+        function renderSchedule(data) {
+            const scheduleBody = document.getElementById('schedule-body');
+            const gameSummary = document.getElementById('game-summary');
+            
+            let wins = 0;
+            let losses = 0;
+            let draws = 0;
 
-                    data.forEach(game => {
-                        if (game.result === '승') {
-                            wins++;
-                        } else if (game.result === '패') {
-                            losses++;
-                        } else if (game.result === '무') {
-                            draws++;
-                        }
+            data.forEach(game => {
+                if (game.result === '승') {
+                    wins++;
+                } else if (game.result === '패') {
+                    losses++;
+                } else if (game.result === '무') {
+                    draws++;
+                }
 
-                        const row = document.createElement('tr');
-                        
-                        const categoryClass = game.category === '일요리그C1' ? 'category-c1' : 'category-regular';
-                        let resultClass = '';
-                        if (game.result === '승') {
-                            resultClass = 'result-win';
-                        } else if (game.result === '패') {
-                            resultClass = 'result-lose';
-                        } else if (game.result === '무') {
-                            resultClass = 'result-draw';
-                        }
+                const row = document.createElement('tr');
+                
+                const categoryClass = game.category === '일요리그C1' ? 'category-c1' : 'category-regular';
+                let resultClass = '';
+                if (game.result === '승') {
+                    resultClass = 'result-win';
+                } else if (game.result === '패') {
+                    resultClass = 'result-lose';
+                } else if (game.result === '무') {
+                    resultClass = 'result-draw';
+                }
 
-                        row.innerHTML = `
-                            <td>${game.id}</td>
-                            <td class="date">${game.date}</td>
-                            <td><span class="category ${categoryClass}">${game.category}</span></td>
-                            <td class="result ${resultClass}">${game.result || ''}</td>
-                            <td class="match">${game.match.replace(/Home_Instagram/g, '<span class="home-team">Home_Instagram</span>')}</td>
-                        `;
-                        scheduleBody.appendChild(row);
-                    });
+                row.innerHTML = `
+                    <td>${game.id}</td>
+                    <td class="date">${game.date}</td>
+                    <td><span class="category ${categoryClass}">${game.category}</span></td>
+                    <td class="result ${resultClass}">${game.result || ''}</td>
+                    <td class="match">${game.match.replace(/Home_Instagram/g, '<span class="home-team">Home_Instagram</span>')}</td>
+                `;
+                scheduleBody.appendChild(row);
+            });
 
-                    gameSummary.textContent = `시즌 전적: ${wins}승 ${draws}무 ${losses}패`;
-                })
-                .catch(error => console.error('Error loading schedule:', error));
+            gameSummary.textContent = `시즌 전적: ${wins}승 ${draws}무 ${losses}패`;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof scheduleData !== 'undefined') {
+                renderSchedule(scheduleData);
+            } else {
+                console.error('scheduleData를 찾을 수 없습니다.');
+            }
         });
 
         function downloadImage() {

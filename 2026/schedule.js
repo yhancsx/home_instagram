@@ -1,4 +1,4 @@
-[
+const scheduleData = [
     {
         "id": 1,
         "date": "02월22일(일) 10:00",
@@ -153,4 +153,4 @@
         "match": "Mollangs vs Home_Instagram",
         "result": null
     }
-]
+];
