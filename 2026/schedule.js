@@ -32,7 +32,7 @@ const scheduleData = [
         "date": "04월05일(일) 09:00",
         "category": "일요리그",
         "match": "로시난테(Rosinante) vs Home_Instagram",
-        "result": null
+        "result": "승"
     },
     {
         "id": 6,
