@@ -116,6 +116,36 @@
             transform: translateY(0);
         }
 
+        .quick-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .quick-link-item {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background-color: #f7fafc;
+            color: #4a5568;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .quick-link-item:hover {
+            background-color: #e2e8f0;
+            color: #2d3748;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -274,6 +304,11 @@
             <div class="team-name">Home_Instagram</div>
             <div id="game-summary" class="game-summary"></div>
             <button class="download-btn" onclick="downloadImage()">📥 이미지로 다운로드</button>
+            <div class="quick-links">
+                <a href="https://www.youtube.com/@home_instagram3632" target="_blank" class="quick-link-item" title="유튜브">📺 유튜브</a>
+                <a href="https://docs.google.com/spreadsheets/d/1Ta98xHQX98tD81bM2zFmvJWSyVTOUnvlHBONLWPutFU/edit?gid=1306478431#gid=1306478431" target="_blank" class="quick-link-item" title="출석표 및 회칙">📋 출석표/회칙</a>
+                <a href="http://naver.me/GI34QTjW" target="_blank" class="quick-link-item" title="사진 모음">📸 사진 모음</a>
+            </div>
         </div>
 
         <div class="table-wrapper">
@@ -367,8 +402,10 @@
 
             const hashColumnCells = document.querySelectorAll('tbody td:nth-child(1)');
             const resultColumnCells = document.querySelectorAll('tbody td:nth-child(4)');
+            
+            const quickLinks = document.querySelector('.quick-links');
 
-            const elementsToHide = [hashColumnHeader, resultColumnHeader, button, ...hashColumnCells, ...resultColumnCells];
+            const elementsToHide = [hashColumnHeader, resultColumnHeader, button, quickLinks, ...hashColumnCells, ...resultColumnCells];
             elementsToHide.forEach(el => {
                 if (el) el.style.display = 'none';
             });
