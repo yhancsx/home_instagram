@@ -39,7 +39,7 @@ const scheduleData = [
         "date": "04월19일(일) 15:00",
         "category": "일요리그",
         "match": "Home_Instagram vs 미라클",
-        "result": null
+        "result": "패"
     },
     {
         "id": 7,
