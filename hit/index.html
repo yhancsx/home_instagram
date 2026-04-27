@@ -233,12 +233,32 @@
             white-space: nowrap;
         }
 
-        /* 이름 컬럼 왼쪽 정렬 */
+        /* 이름 컬럼 왼쪽 정렬 + sticky */
         tbody td.td-name {
             text-align: left;
             font-weight: 600;
             color: #2d3748;
             min-width: 90px;
+        }
+
+        /* sticky 고정 컬럼 */
+        .col-sticky {
+            position: sticky;
+            left: 0;
+            z-index: 2;
+        }
+
+        thead th.col-sticky {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 3;
+        }
+
+        tbody td.col-sticky {
+            background: white;
+        }
+
+        tbody tr:hover td.col-sticky {
+            background-color: #f0f4ff;
         }
 
         /* 타율/장타율/출루율/OPS 강조 */
@@ -454,6 +474,7 @@
                 const isPrimary = idx < PRIMARY_COLUMNS.length;
 
                 if (isPrimary) th.classList.add('col-primary');
+                if (col.key === '이름') th.classList.add('col-sticky');
 
                 // 정렬 상태 클래스
                 if (col.key === sortKey) {
@@ -518,6 +539,7 @@
 
                     if (col.key === '이름') {
                         td.classList.add('td-name');
+                        td.classList.add('col-sticky');
                     } else if (rateKeys.has(col.key)) {
                         td.classList.add('td-rate');
                     }
