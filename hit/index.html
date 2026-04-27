@@ -224,6 +224,10 @@
             border-collapse: collapse;
             min-width: 900px;
         }
+        
+        table.table-compact {
+            min-width: 100%; /* 전체 탭 등 컬럼이 적을 때 강제 확장 방지 */
+        }
 
         thead {
             background: #667eea;
@@ -297,7 +301,7 @@
             text-align: left;
             font-weight: 600;
             color: #2d3748;
-            min-width: 90px;
+            min-width: 60px;
         }
 
         /* sticky 고정 컬럼 */
@@ -305,7 +309,6 @@
             position: sticky;
             left: 0;
             z-index: 2;
-            width: 1%;
         }
 
         thead th.col-sticky {
@@ -382,6 +385,10 @@
             table {
                 font-size: 0.78em;
                 min-width: 800px;
+            }
+
+            table.table-compact {
+                min-width: 100%;
             }
 
             thead th,
@@ -496,6 +503,14 @@
             // 탭 활성화
             document.querySelectorAll('.year-tab').forEach(t => t.classList.remove('active'));
             document.getElementById('tab-' + year).classList.add('active');
+
+            // 컬럼 수에 따른 테이블 너비 모드 전환
+            const hitTable = document.getElementById('hit-table');
+            if (year === 'all') {
+                hitTable.classList.add('table-compact');
+            } else {
+                hitTable.classList.remove('table-compact');
+            }
 
             // UI 초기화
             document.getElementById('table-wrapper').style.display = 'none';
