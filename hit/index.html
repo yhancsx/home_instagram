@@ -212,7 +212,7 @@
         }
 
         thead {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #667eea;
             color: white;
         }
 
@@ -252,9 +252,9 @@
             opacity: 1;
         }
 
-        /* 주요 컬럼 강조 (앞쪽 고정 컬럼) */
-        thead th.col-primary {
-            background: rgba(255,255,255,0.08);
+        /* 정렬된 컬럼 강조 (헤더) */
+        thead th.col-sorted {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         tbody tr {
@@ -294,7 +294,7 @@
         }
 
         thead th.col-sticky {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #667eea;
             z-index: 3;
         }
 
@@ -556,16 +556,15 @@
             const headerRow = document.getElementById('table-header');
             headerRow.innerHTML = '';
 
-            currentColumns.forEach((col, idx) => {
+            currentColumns.forEach((col) => {
                 const th = document.createElement('th');
-                const isPrimary = idx < PRIMARY_COLUMNS.length;
 
-                if (isPrimary) th.classList.add('col-primary');
                 if (col.key === '이름') th.classList.add('col-sticky');
 
                 // 정렬 상태 클래스
                 if (col.key === sortKey) {
                     th.classList.add(sortAsc ? 'sort-asc' : 'sort-desc');
+                    th.classList.add('col-sorted');
                 }
 
                 const iconChar = col.key === sortKey ? (sortAsc ? '▲' : '▼') : '⇅';
