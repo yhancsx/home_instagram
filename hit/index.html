@@ -369,12 +369,12 @@
             { key: '장타율',  label: '장타율' },
             { key: '출루율',  label: '출루율' },
             { key: 'OPS',     label: 'OPS' },
+            { key: '삼진율',  label: '삼진율', computed: true },
             { key: '타석',    label: '타석' },
             { key: '타수',    label: '타수' },
             { key: '총안타',  label: '총안타' },
             { key: '볼넷',    label: '볼넷' },
             { key: 'BB/K',    label: 'BB/K' },
-            { key: '삼진율',  label: '삼진율', computed: true },
         ];
 
         // 순위 컬럼은 테이블에서 미노출
@@ -496,7 +496,7 @@
             });
 
             // 타율 강조 컬럼 키 셋
-            const rateKeys = new Set(['타율', '장타율', '출루율', 'OPS']);
+            const rateKeys = new Set(['타율', '장타율', '출루율', 'OPS', '삼진율']);
 
             sorted.forEach((player) => {
                 const tr = document.createElement('tr');
