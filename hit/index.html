@@ -472,6 +472,7 @@
             { key: '출루율',  label: '출루율' },
             { key: 'OPS',     label: 'OPS' },
             { key: '삼진율',  label: '삼진율', computed: true },
+            { key: 'wRC+',    label: 'wRC+' },
             { key: '타석',    label: '타석' },
             { key: '타수',    label: '타수' },
             { key: '총안타',  label: '총안타' },
@@ -525,6 +526,7 @@
                 ])
                 .then(datasets => {
                     currentData = mergeAllYears(datasets);
+                    computeAdvancedStats(currentData);
                     buildColumns(currentData);
                     updateSliderBoundary();
                     renderTable();
@@ -545,6 +547,7 @@
                     })
                     .then(data => {
                         currentData = data;
+                        computeAdvancedStats(currentData);
                         buildColumns(data);
                         updateSliderBoundary();
                         renderTable();
@@ -557,6 +560,71 @@
                             '데이터를 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
                     });
             }
+        }
+
+        // ── 고급 스탯 계산 (wRC, wRC+) ──
+        function computeAdvancedStats(data) {
+            let t_ab=0, t_h=0, t_bb=0, t_hbp=0, t_sf=0, t_ibb=0, t_r=0, t_pa=0;
+            let t_1b=0, t_2b=0, t_3b=0, t_hr=0;
+
+            // 1. 팀 전체 합계 계산
+            data.forEach(p => {
+                t_ab += parseFloat(p['타수']) || 0;
+                t_h += parseFloat(p['총안타']) || 0;
+                t_bb += parseFloat(p['볼넷']) || 0;
+                t_hbp += parseFloat(p['사구']) || 0;
+                t_sf += parseFloat(p['희비']) || 0;
+                t_ibb += parseFloat(p['고의 4구']) || 0;
+                t_r += parseFloat(p['득점']) || 0;
+                t_pa += parseFloat(p['타석']) || 0;
+                t_1b += parseFloat(p['1루타']) || 0;
+                t_2b += parseFloat(p['2루타']) || 0;
+                t_3b += parseFloat(p['3루타']) || 0;
+                t_hr += parseFloat(p['홈런']) || 0;
+            });
+
+            // 2. 팀 평균 wOBA 및 wOBA Scale 도출
+            const t_obp_den = t_ab + t_bb + t_hbp + t_sf;
+            const t_obp = t_obp_den > 0 ? (t_h + t_bb + t_hbp) / t_obp_den : 0;
+
+            const t_woba_den = t_ab + t_bb - t_ibb + t_sf + t_hbp;
+            const t_unscaled_woba = t_woba_den > 0 ? 
+                (0.69*(t_bb - t_ibb) + 0.722*t_hbp + 0.888*t_1b + 1.271*t_2b + 1.616*t_3b + 2.101*t_hr) / t_woba_den : 0;
+
+            const woba_scale = (t_unscaled_woba > 0 && t_obp > 0) ? t_obp / t_unscaled_woba : 1.2;
+            const team_woba = t_unscaled_woba * woba_scale;
+            const team_r_pa = t_pa > 0 ? t_r / t_pa : 0;
+
+            // 3. 개별 선수 wRC, wRC+ 계산
+            data.forEach(p => {
+                const ab = parseFloat(p['타수']) || 0;
+                const bb = parseFloat(p['볼넷']) || 0;
+                const hbp = parseFloat(p['사구']) || 0;
+                const sf = parseFloat(p['희비']) || 0;
+                const ibb = parseFloat(p['고의 4구']) || 0;
+                const p_1b = parseFloat(p['1루타']) || 0;
+                const p_2b = parseFloat(p['2루타']) || 0;
+                const p_3b = parseFloat(p['3루타']) || 0;
+                const hr = parseFloat(p['홈런']) || 0;
+                const pa = parseFloat(p['타석']) || 0;
+
+                const woba_den = ab + bb - ibb + sf + hbp;
+                const unscaled_woba = woba_den > 0 ? 
+                    (0.69*(bb - ibb) + 0.722*hbp + 0.888*p_1b + 1.271*p_2b + 1.616*p_3b + 2.101*hr) / woba_den : 0;
+                const woba = unscaled_woba * woba_scale;
+                
+                let wrc_plus = 0;
+
+                if (pa > 0) {
+                    const wraa = ((woba - team_woba) / woba_scale) * pa;
+                    
+                    if (team_r_pa > 0) {
+                        wrc_plus = ((wraa / pa) + team_r_pa) / team_r_pa * 100;
+                    }
+                }
+
+                p['wRC+'] = Math.round(wrc_plus).toString();
+            });
         }
 
         // ── 슬라이더 조작 ──
@@ -603,7 +671,7 @@
             }
 
             if (currentYear === 'all') {
-                const allowedKeys = new Set(['이름', '타율', '장타율', '출루율', 'OPS', '삼진율']);
+                const allowedKeys = new Set(['이름', '타율', '장타율', '출루율', 'OPS', '삼진율', 'wRC+']);
                 currentColumns = PRIMARY_COLUMNS.filter(c => allowedKeys.has(c.key));
                 return;
             }
@@ -680,7 +748,7 @@
             });
 
             // 타율 강조 컬럼 키 셋
-            const rateKeys = new Set(['타율', '장타율', '출루율', 'OPS', '삼진율']);
+            const rateKeys = new Set(['타율', '장타율', '출루율', 'OPS', '삼진율', 'wRC+']);
 
             // 각 컬럼별 최대값 찾기 (이름 컬럼 제외)
             const maxValues = {};
@@ -764,7 +832,7 @@
         // ── 3개년 병합 로직 ──
         const SUM_KEYS = ['게임수','타석','타수','총안타','1루타','2루타','3루타',
                           '홈런','루타','득점','타점','볼넷','사구','삼진',
-                          '도루','희타','희비','병살','멀티 히트'];
+                          '도루','희타','희비','병살','멀티 히트', '고의 4구', '도실 (도루자)'];
 
         function mergeAllYears(datasets) {
             const map = new Map();
