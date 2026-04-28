@@ -222,6 +222,7 @@
         function recalcRates(p) {
             const ab = p['타수'], h = p['총안타'], tb = p['루타'];
             const bb = p['볼넷'], hbp = p['사구'], sf = p['희비'];
+            const pa = p['타석'], k = p['삼진'];
 
             const avg = ab > 0 ? (h / ab) : 0;
             const slg = ab > 0 ? (tb / ab) : 0;
@@ -229,13 +230,15 @@
                 ? (h + bb + hbp) / (ab + bb + hbp + sf)
                 : 0;
             const ops = slg + obp;
+            const kRate = pa > 0 ? (k / pa) : 0;
 
             return {
                 ...p,
                 '타율': avg.toFixed(3),
                 '장타율': slg.toFixed(3),
                 '출루율': obp.toFixed(3),
-                'OPS': ops.toFixed(3)
+                'OPS': ops.toFixed(3),
+                '삼진율': kRate.toFixed(3)
             };
         }
 
@@ -392,6 +395,7 @@
                     "3년누적_OPS": p.statsTotal['OPS'],
                     "3년누적_wRC+": p.statsTotal['wRC+'],
                     "3년누적_타석": p.statsTotal['타석'],
+                    "3년누적_삼진율": p.statsTotal['삼진율'],
                     "3년누적_도루": p.statsTotal['도루']
                 };
                 if (p.stats2026) {
@@ -399,6 +403,7 @@
                     data["2026_OPS"] = p.stats2026['OPS'];
                     data["2026_wRC+"] = p.stats2026['wRC+'];
                     data["2026_타석"] = p.stats2026['타석'];
+                    data["2026_삼진율"] = p.stats2026['삼진율'];
                 } else {
                     data["2026_기록없음"] = true;
                 }
@@ -423,7 +428,7 @@ ${JSON.stringify(promptData, null, 2)}
 
 결과는 마크다운 포맷으로 다음 내용을 포함하여 작성해주세요:
 1. 최적의 1~9번 타순 리스트 (이름만 나열하지 말고, 주요 스탯을 함께 표기)
-2. 각 선수를 해당 타순에 배치한 명확한 이유 (출루율, 장타율, 최근 폼 등 구체적 수치 언급)
+2. 각 선수를 해당 타순에 배치한 명확한 이유 (출루율, 장타율, 삼진율, 최근 폼 등 구체적 수치 언급)
 3. (선택사항) 벤치 멤버 명단
 4. 전체 라인업의 핵심 전략 요약
 `;
