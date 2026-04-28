@@ -139,6 +139,18 @@
         }
         
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        @media (max-width: 480px) {
+            .player-list-container {
+                grid-template-columns: repeat(3, 1fr);
+                padding: 10px;
+                gap: 4px;
+            }
+            .player-checkbox-label {
+                font-size: 0.85em;
+                padding: 2px;
+            }
+        }
     </style>
 </head>
 <body>
