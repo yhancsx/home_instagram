@@ -178,7 +178,8 @@
             <h2 class="panel-title">👥 참석 인원 선택</h2>
             
             <div class="actions-bar">
-                <div>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    <button class="btn-secondary" id="sort-toggle-btn" onclick="toggleSortOrder()">정렬: 게임수순 ⇅</button>
                     <button class="btn-secondary" onclick="toggleAllPlayers(true)">전체 선택</button>
                     <button class="btn-secondary" onclick="toggleAllPlayers(false)">전체 해제</button>
                 </div>
@@ -198,6 +199,11 @@
             <button class="btn-primary" onclick="getRecommendation()">최적 라인업 추천받기</button>
 
             <div id="loader" class="loader"></div>
+            
+            <div id="saved-info-banner" style="display: none; background: #ebf8ff; border: 1px solid #bee3f8; color: #2b6cb0; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px; font-size: 0.9em; justify-content: space-between; align-items: center;">
+                <span id="saved-info-text">💾 저장된 라인업 (생성일시: -)</span>
+                <button class="btn-secondary" style="padding: 4px 10px; font-size: 0.8em; margin: 0; border-radius: 4px;" onclick="clearSavedLineup()">기록 삭제</button>
+            </div>
             
             <div id="recommendation-result" class="result-container" style="display: none;">
                 <!-- 결과 마크다운 렌더링 -->
@@ -325,6 +331,8 @@
 
         // ── 초기 데이터 로드 및 UI 구성 ──
         let allPlayersData = [];
+        let selectedPlayerNames = new Set();
+        let currentSortOrder = 'games'; // 'games' or 'name'
 
         document.addEventListener('DOMContentLoaded', () => {
             Promise.all([
@@ -352,45 +360,158 @@
                         };
                     });
                 
+                // localStorage에 저장된 라인업 불러오기 시도
+                const loaded = loadSavedLineup();
+                
+                // 저장된 기록이 없다면 기본값(2026 경기수 상위 10명) 선택
+                if (!loaded) {
+                    sortPlayers('games');
+                    allPlayersData.slice(0, 10).forEach(p => selectedPlayerNames.add(p.이름));
+                }
+                
                 renderPlayerCheckboxes();
             });
         });
+
+        function sortPlayers(mode) {
+            if (mode === 'games') {
+                allPlayersData.sort((a, b) => {
+                    const gamesA = a.stats2026 ? parseInt(a.stats2026['게임수']) || 0 : 0;
+                    const gamesB = b.stats2026 ? parseInt(b.stats2026['게임수']) || 0 : 0;
+                    
+                    if (gamesB !== gamesA) {
+                        return gamesB - gamesA;
+                    }
+                    return a.이름.localeCompare(b.이름);
+                });
+            } else {
+                allPlayersData.sort((a, b) => a.이름.localeCompare(b.이름));
+            }
+        }
+
+        function toggleSortOrder() {
+            if (!allPlayersData || allPlayersData.length === 0) return;
+            currentSortOrder = (currentSortOrder === 'games') ? 'name' : 'games';
+            const btn = document.getElementById('sort-toggle-btn');
+            if (btn) {
+                btn.innerHTML = currentSortOrder === 'games' ? '정렬: 게임수순 ⇅' : '정렬: 이름순 ⇅';
+            }
+            renderPlayerCheckboxes();
+        }
 
         function renderPlayerCheckboxes() {
             const container = document.getElementById('player-checkboxes');
             container.innerHTML = '';
             
-            // 2026년 경기수 내림차순 정렬 (경기수가 같으면 이름순)
-            allPlayersData.sort((a, b) => {
-                const gamesA = a.stats2026 ? parseInt(a.stats2026['게임수']) || 0 : 0;
-                const gamesB = b.stats2026 ? parseInt(b.stats2026['게임수']) || 0 : 0;
-                
-                if (gamesB !== gamesA) {
-                    return gamesB - gamesA;
-                }
-                return a.이름.localeCompare(b.이름);
-            });
+            sortPlayers(currentSortOrder);
 
-            allPlayersData.forEach((player, index) => {
+            allPlayersData.forEach((player) => {
                 const label = document.createElement('label');
                 label.className = 'player-checkbox-label';
-                // 2026년 경기수 Top 10 기본 체크
-                const isChecked = index < 10 ? 'checked' : '';
-                label.innerHTML = `<input type="checkbox" value="${index}" ${isChecked} onchange="updateSelectedCount()"> ${player.이름}`;
+                const isChecked = selectedPlayerNames.has(player.이름) ? 'checked' : '';
+                label.innerHTML = `<input type="checkbox" value="${player.이름}" ${isChecked} onchange="handlePlayerCheckboxChange(this)"> ${player.이름}`;
                 container.appendChild(label);
             });
             updateSelectedCount();
         }
 
+        function handlePlayerCheckboxChange(cb) {
+            if (cb.checked) {
+                selectedPlayerNames.add(cb.value);
+            } else {
+                selectedPlayerNames.delete(cb.value);
+            }
+            updateSelectedCount();
+        }
+
         function toggleAllPlayers(checked) {
             const checkboxes = document.querySelectorAll('#player-checkboxes input[type="checkbox"]');
-            checkboxes.forEach(cb => cb.checked = checked);
+            checkboxes.forEach(cb => {
+                cb.checked = checked;
+                if (checked) {
+                    selectedPlayerNames.add(cb.value);
+                } else {
+                    selectedPlayerNames.delete(cb.value);
+                }
+            });
             updateSelectedCount();
         }
 
         function updateSelectedCount() {
-            const count = document.querySelectorAll('#player-checkboxes input[type="checkbox"]:checked').length;
-            document.getElementById('selected-count').textContent = count + '명 선택됨';
+            document.getElementById('selected-count').textContent = selectedPlayerNames.size + '명 선택됨';
+        }
+
+        function saveLineupToStorage(markdownText) {
+            const data = {
+                markdownText: markdownText,
+                selectedPlayers: Array.from(selectedPlayerNames),
+                systemPrompt: document.getElementById('system-prompt').value,
+                timestamp: new Date().toLocaleString('ko-KR')
+            };
+            localStorage.setItem('home_instagram_last_lineup', JSON.stringify(data));
+            showSavedBanner(data.timestamp);
+        }
+
+        function showSavedBanner(timestamp) {
+            const banner = document.getElementById('saved-info-banner');
+            const text = document.getElementById('saved-info-text');
+            if (banner && text) {
+                text.textContent = `💾 저장된 라인업 (생성일시: ${timestamp})`;
+                banner.style.display = 'flex';
+            }
+        }
+
+        function clearSavedLineup() {
+            if (confirm('저장된 라인업 데이터를 삭제하시겠습니까?')) {
+                localStorage.removeItem('home_instagram_last_lineup');
+                
+                const banner = document.getElementById('saved-info-banner');
+                if (banner) banner.style.display = 'none';
+                
+                const resultContainer = document.getElementById('recommendation-result');
+                if (resultContainer) {
+                    resultContainer.style.display = 'none';
+                    resultContainer.innerHTML = '';
+                }
+                
+                // 기본값으로 선택 상태 복원
+                selectedPlayerNames.clear();
+                sortPlayers('games');
+                allPlayersData.slice(0, 10).forEach(p => selectedPlayerNames.add(p.이름));
+                renderPlayerCheckboxes();
+            }
+        }
+
+        function loadSavedLineup() {
+            const rawData = localStorage.getItem('home_instagram_last_lineup');
+            if (!rawData) return false;
+            
+            try {
+                const data = JSON.parse(rawData);
+                if (data && data.markdownText) {
+                    // 선택된 선수 목록 복원
+                    if (Array.isArray(data.selectedPlayers)) {
+                        selectedPlayerNames = new Set(data.selectedPlayers);
+                    }
+                    
+                    // 시스템 프롬프트 복원
+                    if (data.systemPrompt) {
+                        document.getElementById('system-prompt').value = data.systemPrompt;
+                    }
+                    
+                    // 마크다운 결과 복원
+                    const resultContainer = document.getElementById('recommendation-result');
+                    resultContainer.innerHTML = marked.parse(data.markdownText);
+                    resultContainer.style.display = 'block';
+                    
+                    // 배너 표시
+                    showSavedBanner(data.timestamp);
+                    return true;
+                }
+            } catch (e) {
+                console.error("Failed to load saved lineup data:", e);
+            }
+            return false;
         }
 
         async function getRecommendation() {
@@ -399,13 +520,12 @@
                 return;
             }
 
-            const checkboxes = document.querySelectorAll('#player-checkboxes input[type="checkbox"]:checked');
-            if (checkboxes.length < 9) {
+            if (selectedPlayerNames.size < 9) {
                 alert('야구 라인업 구성을 위해 최소 9명 이상의 선수를 선택해주세요.');
                 return;
             }
 
-            const selectedPlayers = Array.from(checkboxes).map(cb => allPlayersData[cb.value]);
+            const selectedPlayers = allPlayersData.filter(p => selectedPlayerNames.has(p.이름));
             
             // 프롬프트 데이터 구성
             const promptData = selectedPlayers.map(p => {
@@ -433,6 +553,10 @@
             document.getElementById('loader').style.display = 'block';
             document.getElementById('recommendation-result').style.display = 'none';
             document.getElementById('recommendation-result').innerHTML = '';
+            
+            // 신규 조회 시 저장 배너 감추기
+            const banner = document.getElementById('saved-info-banner');
+            if (banner) banner.style.display = 'none';
 
             const userInstructions = document.getElementById('system-prompt').value;
 
@@ -487,6 +611,9 @@ ${outputFormat}
                 const resultContainer = document.getElementById('recommendation-result');
                 resultContainer.innerHTML = marked.parse(markdownText);
                 resultContainer.style.display = 'block';
+
+                // 자동 저장
+                saveLineupToStorage(markdownText);
 
             } catch (error) {
                 console.error(error);
