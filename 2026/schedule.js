@@ -67,7 +67,7 @@ const scheduleData = [
         "date": "05월31일(일) 10:30",
         "category": "일요리그C1",
         "match": "Home_Instagram vs 귓방망이",
-        "result": null
+        "result": "패"
     },
     {
         "id": 11,
