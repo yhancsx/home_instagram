@@ -101,7 +101,7 @@ const scheduleData = [
         "category": "일요리그",
         "match": "Better than You vs Home_Instagram",
         "result": "무",
-        "score": "2:2"
+        "score": "6:6"
     },
     {
         "id": 14,
