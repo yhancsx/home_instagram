@@ -108,7 +108,8 @@ const scheduleData = [
         "date": "06월28일(일) 08:30",
         "category": "일요리그",
         "match": "Triple-X vs Home_Instagram",
-        "result": null
+        "result": "승",
+        "score": "11:7"
     },
     {
         "id": 15,
